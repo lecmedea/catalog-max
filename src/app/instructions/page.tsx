@@ -15,6 +15,7 @@ export default function InstructionsPage() {
       <p className="eyebrow">Catalog MAX</p>
       <h1>Инструкции</h1>
       <p className="lede">Здесь всё, что нужно сделать руками после того, как сайт уже собран. Идите сверху вниз. Каждый шаг заканчивается понятным результатом: что вы должны увидеть, прежде чем переходить дальше.</p>
+      <p>Эта инструкция опубликована вместе с сайтом: <a href="https://lecmedea.github.io/catalog-max/instructions">lecmedea.github.io/catalog-max/instructions</a>.</p>
       <p>Программировать ничего не нужно. Вы будете нажимать кнопки на сайте Supabase, один раз вставите текст в файл на Маке и один раз вставите готовый SQL. Команды для Терминала можно копировать целиком.</p>
 
       <nav className="panel toc" aria-label="Содержание">
@@ -41,8 +42,9 @@ export default function InstructionsPage() {
       <section id="words">
         <h2>Какие слова встретятся</h2>
         <ul>
-          <li><b>Сайт на компьютере.</b> Папка <code>{PROJECT}</code>. Пока вы его не выложили в интернет, он открывается только у вас, по адресу <a href="http://localhost:3000">http://localhost:3000</a>.</li>
-          <li><b>GitHub.</b> Место, где лежит копия кода: <a href="https://github.com/lecmedea/catalog-max">github.com/lecmedea/catalog-max</a>. Это архив проекта. Сам каталог для посетителей оттуда сам по себе не открывается.</li>
+          <li><b>Сайт на компьютере.</b> Папка <code>{PROJECT}</code>. Рабочая копия для правок открывается у вас по адресу <a href="http://localhost:3000">http://localhost:3000</a>, когда в Терминале запущен сайт.</li>
+          <li><b>Сайт для посетителей.</b> Уже открыт по адресу <a href="https://lecmedea.github.io/catalog-max/">https://lecmedea.github.io/catalog-max/</a>. Это витрина: главная, каталог, рейтинг, продажа, инструменты, контакты и эта инструкция. Вход, кабинет и добавление каналов там пока не работают.</li>
+          <li><b>GitHub.</b> Место, где лежит копия кода: <a href="https://github.com/lecmedea/catalog-max">github.com/lecmedea/catalog-max</a>. Страницы для посетителей собираются из этого кода и публикуются на адрес выше.</li>
           <li><b>Supabase.</b> Сервис в интернете. В нём живут каналы, категории, пользователи и письма «подтвердите почту». Регистрация бесплатная для старта.</li>
           <li><b>Проект Supabase.</b> Одна отдельная база. Для этого каталога нужен один проект.</li>
           <li><b>Publishable key.</b> Ключ, который начинается с <code>sb_publishable_</code>. Его как раз вставляют в файл на компьютере. Сайт показывает его браузеру, а доступ к чужим карточкам всё равно закрыт правилами базы.</li>
@@ -300,7 +302,8 @@ npm run dev`}</pre>
 
       <section id="internet">
         <h2>15. Открыть сайт не только на этом Маке</h2>
-        <p>Адрес <code>localhost</code> существует только на вашем компьютере. Чтобы каталог открывался у других людей, код с GitHub подключают к хостингу. Для этого сайта прямой путь — Vercel: он умеет Next.js и берёт проект из GitHub.</p>
+        <p>Адрес <code>localhost</code> существует только на вашем компьютере. Витрина для остальных уже опубликована: <a href="https://lecmedea.github.io/catalog-max/">https://lecmedea.github.io/catalog-max/</a>. На ней можно смотреть страницы и эту инструкцию. Регистрация, письма и кабинет на GitHub Pages не заработают: там нет сервера Next.js и нет базы.</p>
+        <p>Чтобы люди могли входить, добавлять каналы и проходить модерацию, тот же код с GitHub подключают к хостингу, который умеет Next.js. Прямой путь — Vercel.</p>
         <ol>
           <li>Откройте <a href="https://vercel.com">https://vercel.com</a> и войдите через GitHub аккаунтом <code>lecmedea</code>.</li>
           <li>Нажмите <b>Add New → Project</b> и выберите репозиторий <a href="https://github.com/lecmedea/catalog-max">catalog-max</a>.</li>
@@ -316,7 +319,7 @@ https://catalog-max-....vercel.app/auth/confirm`}</pre>
         <ol start={9}>
           <li>Сохраните URL Configuration. Запросите новое письмо регистрации уже с живого адреса. Старые письма ведут на localhost и с другого компьютера не откроются.</li>
         </ol>
-        <p>Пока шаг 15 не сделан, рабочий адрес каталога — <a href="http://localhost:3000">http://localhost:3000</a> при запущенном Терминале.</p>
+        <p>Пока шаг с Vercel не сделан, витрина для посетителей — <a href="https://lecmedea.github.io/catalog-max/">https://lecmedea.github.io/catalog-max/</a>, а полная копия с входом — <a href="http://localhost:3000">http://localhost:3000</a> при запущенном Терминале.</p>
       </section>
 
       <section id="dont">

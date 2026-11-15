@@ -1,13 +1,13 @@
 """Export the public, unconfigured catalog interface for GitHub Pages.
 No server actions, login submission or backend is claimed in this version.
 """
-import re,shutil,urllib.request,json,subprocess
+import os,re,shutil,urllib.request,json,subprocess
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'pages-site'
 PREFIX='/catalog-max'
-ROUTES=['/','/catalog','/rating','/platforms','/instructions','/contacts','/auth/login','/auth/register','/auth/reset-password']
+ROUTES=['/','/catalog','/sale','/rating','/platforms','/instructions','/contacts','/auth/login','/auth/register','/auth/reset-password']
 
 def transform(raw):
  raw=re.sub(r'<script\b[^>]*>.*?</script>','',raw,flags=re.S|re.I)
@@ -24,7 +24,7 @@ def main():
  if OUT.exists():shutil.rmtree(OUT)
  OUT.mkdir()
  for route in ROUTES:
-  with urllib.request.urlopen('http://127.0.0.1:4317'+route,timeout=30) as response:raw=response.read().decode()
+  with urllib.request.urlopen('http://127.0.0.1:'+os.environ.get('PAGES_PORT','4317')+route,timeout=30) as response:raw=response.read().decode()
   target=OUT/route.strip('/')/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(transform(raw))
  for alias,target in [('login','auth/login'),('register','auth/register')]:
   dest=OUT/alias/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes((OUT/target/'index.html').read_bytes())

@@ -15,6 +15,7 @@ export function Header({ profile }: { profile: Pick<Profile, "username" | "full_
       <nav>
         <Link className="nav-link" href="/">Главная</Link>
         <Link className="nav-link" href="/catalog">Каталог</Link>
+        <Link className="nav-link" href="/sale">Продажа каналов и ботов</Link>
         <Link className="nav-link" href="/rating">Рейтинг каналов</Link>
         <Link className="nav-link" href="/platforms">Инструменты</Link>
         <Link className="btn" href="/instructions">Инструкции</Link>
