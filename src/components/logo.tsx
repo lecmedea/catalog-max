@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-export function Logo({ size = 64 }: { size?: number }) {
+export function Logo({ size = 83 }: { size?: number }) {
   const gradientId = useId().replace(/:/g, "");
   return (
     <svg width={size} height={size} viewBox="0 0 86 86" aria-hidden="true">
@@ -17,7 +17,7 @@ export function Logo({ size = 64 }: { size?: number }) {
       <path d="M34 28l14 8-6 18-16-6z" fill="#ffd36a" opacity="0.8" />
       <path d="M48 30l12 4-2 16-12-2z" fill="#7ee0ff" opacity="0.75" />
       <path d="M36 44l10-2 6 14-14 4z" fill="#ff9ad5" opacity="0.7" />
-      <path d="M30 52 V40 L36 47 L42 40 V52 M46 52 L50 40 L54 52 M47.2 47.2 H52.6 M58 40 L68 52 M68 40 L58 52" fill="none" stroke="#1b1714" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M31 50 V39 L35.6 45 L40.2 39 V50 M43 50 L46.2 39 L49.4 50 M44.1 45.6 H48.2 M51.2 39 L57 50 M57 39 L51.2 50" fill="none" stroke="#1b1714" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M24 22c8-4 18-3 22 2" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" opacity="0.85" />
     </svg>
   );

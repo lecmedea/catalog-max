@@ -13,9 +13,12 @@ export function Header({ profile }: { profile: Pick<Profile, "username" | "full_
         </span>
       </Link>
       <nav>
+        <Link className="nav-link" href="/">Главная</Link>
         <Link className="nav-link" href="/catalog">Каталог</Link>
+        <Link className="nav-link" href="/rating">Рейтинг каналов</Link>
         <Link className="nav-link" href="/platforms">Инструменты</Link>
         <Link className="btn" href="/instructions">Инструкции</Link>
+        <Link className="nav-link" href="/contacts">Контакты</Link>
         {profile?.role === "admin" ? <Link className="nav-link" href="/admin">Админка</Link> : null}
         {profile ? <Link className="nav-link" href="/dashboard">{profile.full_name || profile.username || "Кабинет"}</Link> : <Link className="btn btn-primary" href="/auth/login">Войти</Link>}
       </nav>

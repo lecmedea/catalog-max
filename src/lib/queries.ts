@@ -60,6 +60,22 @@ export async function freshChannels() {
   return ((data ?? []) as unknown as Array<Channel & { categories: Category | Category[] | null }>).map(asChannel);
 }
 
+export async function rankedChannels() {
+  if (!supabaseEnv()) return { channels: [] as Channel[], unconfigured: true };
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("channels")
+    .select(CHANNEL_COLUMNS)
+    .eq("status", "approved")
+    .order("subscribers_count", { ascending: false })
+    .order("title", { ascending: true })
+    .limit(100);
+  return {
+    channels: ((data ?? []) as unknown as Array<Channel & { categories: Category | Category[] | null }>).map(asChannel),
+    unconfigured: false,
+  };
+}
+
 export async function categoryCounts() {
   if (!supabaseEnv()) return [] as Array<Category & { channel_count: number }>;
   const supabase = await createClient();
