@@ -585,6 +585,7 @@ const FLOCKS = [
     { test: (path) => path === "/", ids: ["01", "08"] },
     { test: (path) => path.startsWith("/instructions"), ids: ["04", "05"] },
     { test: (path) => path.startsWith("/platforms"), ids: ["03", "06"] },
+    { test: (path) => path.startsWith("/sale"), ids: ["10", "13"] },
     { test: (path) => path.startsWith("/rating"), ids: ["02", "11"] },
     { test: (path) => path.startsWith("/contacts"), ids: ["07", "12"] },
     { test: (path) => path === "/login" || path.startsWith("/auth/login"), ids: ["09", "13"] },
