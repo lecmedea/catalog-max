@@ -33,6 +33,9 @@ def main():
  for source in (ROOT/'.next/static').rglob('*'):
   if source.suffix not in {'.css','.ttf','.woff','.woff2'}:continue
   dest=OUT/'_next/static'/source.relative_to(ROOT/'.next/static');dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,dest)
+  if dest.suffix=='.css':
+   text=dest.read_text().replace('url(/_next/static/media/','url(../media/')
+   dest.write_text(text)
  shutil.copytree(ROOT/'public/chicks',OUT/'chicks')
  for name in ['favicon.ico','icon.svg']:
   source=ROOT/'src/app'/name
