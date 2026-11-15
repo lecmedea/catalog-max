@@ -89,29 +89,19 @@ p { line-height: 1.45; }
 }
 .filters h2 { grid-column: 1 / -1; margin: 0; }
 .filters label { min-width: 0; }
-.chicks { position: fixed; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
-.chick { position: absolute; bottom: 6px; height: 108px; width: auto; max-width: none; }
-.chick.walk { animation: chick-walk 18s linear infinite; }
-.chick.hang { animation: chick-hang 2.6s ease-in-out infinite; }
-.chick.drift { height: 72px; animation: chick-drift 7s ease-in-out infinite; }
+.chick-stage {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 220px;
+  z-index: 3;
+  pointer-events: none;
+}
 .rating { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .rating-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items: center; }
 .rating-row b { font-size: 32px; line-height: 1; }
-@keyframes chick-walk {
-  0% { left: -14%; transform: translateY(0) scaleX(1); }
-  48% { left: 82%; transform: translateY(-14px) scaleX(1); }
-  50% { left: 82%; transform: translateY(0) scaleX(-1); }
-  98% { left: -14%; transform: translateY(-10px) scaleX(-1); }
-  100% { left: -14%; transform: translateY(0) scaleX(1); }
-}
-@keyframes chick-hang {
-  0%, 100% { transform: translateY(0) rotate(-4deg); }
-  50% { transform: translateY(-18px) rotate(5deg); }
-}
-@keyframes chick-drift {
-  0%, 100% { transform: translateX(0) rotate(-8deg); }
-  50% { transform: translateX(24px) rotate(8deg); }
-}
 .stack { display: grid; gap: 12px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .muted { color: var(--muted); }
@@ -173,7 +163,7 @@ textarea { min-height: 120px; resize: vertical; }
 .chart { width: 100%; height: 180px; background: #fffdf8; border: 2px solid var(--ink); border-radius: 16px; }
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { text-align: left; padding: 8px; border-bottom: 1.5px solid var(--ink); vertical-align: top; }
-.foot { padding: 10px 0 128px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; position: relative; z-index: 4; }
+.foot { padding: 10px 0 150px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .dash { display: grid; grid-template-columns: 220px 1fr; gap: 18px; }
 .side a { display: block; margin-bottom: 8px; }
 .guide { display: grid; gap: 14px; max-width: 860px; }

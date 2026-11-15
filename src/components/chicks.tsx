@@ -1,9 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-
-const WALK = new Set(["01", "02", "03", "08", "09", "10"]);
-const DRIFT = new Set(["07", "14"]);
+import { ChickStage } from "@/components/chick-stage";
 
 const FLOCKS: Array<{ test: (path: string) => boolean; ids: string[] }> = [
   { test: (path) => path === "/", ids: ["01", "08"] },
@@ -25,30 +23,8 @@ function flockFor(path: string) {
 }
 
 export function Chicks() {
-  const ids = flockFor(usePathname() || "/");
+  const path = usePathname() || "/";
+  const ids = flockFor(path);
   if (ids.length === 0) return null;
-  return (
-    <div className="chicks" aria-hidden="true">
-      {ids.map((id, index) => {
-        const walker = WALK.has(id);
-        const motion = walker ? "walk" : DRIFT.has(id) ? "drift" : "hang";
-        return (
-          <img
-            key={id}
-            className={`chick ${motion}`}
-            src={`/chicks/chick-${id}.png`}
-            alt=""
-            style={walker ? {
-              animationDelay: `-${Number(id) * 1.7}s`,
-              animationDuration: `${16 + (Number(id) % 5)}s`,
-            } : {
-              left: `${10 + index * 34}%`,
-              bottom: `${8 + (index % 2) * 18}px`,
-              animationDelay: `${index * 0.45}s`,
-            }}
-          />
-        );
-      })}
-    </div>
-  );
+  return <ChickStage key={ids.join("-")} ids={ids} />;
 }
