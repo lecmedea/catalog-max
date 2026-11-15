@@ -1,15 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 import { Chicks } from "@/components/chicks";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { currentSession } from "@/lib/auth";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "600", "700"],
+const sourceSans = localFont({
+  src: "./fonts/SourceSans3.ttf",
+  weight: "200 900",
   display: "swap",
   variable: "--font-source-sans",
 });
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={sourceSans.variable}>
       <body style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', 'Source Sans Pro', sans-serif" }}>
-        <Chicks />
+        <Suspense fallback={null}><Chicks /></Suspense>
         <Suspense fallback={<Header profile={null} />}>
           <SessionHeader />
         </Suspense>
