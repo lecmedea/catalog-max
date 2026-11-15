@@ -1,69 +1,45 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { ChannelCard } from "@/components/channel-card";
+import { SetupNote } from "@/components/setup-note";
+import { categoryCounts, freshChannels } from "@/lib/queries";
+import { supabaseEnv } from "@/lib/supabase/env";
 
-export default function Home() {
+export default async function HomePage() {
+  const configured = Boolean(supabaseEnv());
+  const [categories, fresh] = configured ? await Promise.all([categoryCounts(), freshChannels()]) : [[], []];
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <section className="hero">
+        <div>
+          <p className="eyebrow">Catalog MAX</p>
+          <h1>Каталог каналов MAX</h1>
+          <p className="lede">Библиотека каналов мессенджера MAX: поиск, категории и свежие карточки. Канал добавляет владелец, в каталог он попадает после проверки.</p>
+          <form className="row" action="/catalog" method="get">
+            <label style={{ flex: 1 }}>Поиск по каталогу<input name="q" placeholder="Название или тема" /></label>
+            <button className="btn btn-primary" type="submit">Найти</button>
+          </form>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <aside className="panel">
+          <h2>Популярные категории</h2>
+          <div className="chips">
+            {categories.map((category) => (
+              <Link className="chip" key={category.id} href={`/catalog?category=${category.id}`}>{category.name} · {category.channel_count}</Link>
+            ))}
+          </div>
+          {categories.length === 0 ? <p className="muted">Категории появятся после подключения базы.</p> : null}
+        </aside>
+      </section>
+      {configured ? null : <SetupNote />}
+      <section>
+        <div className="row" style={{ justifyContent: "space-between" }}>
+          <h2>Свежие объявления</h2>
+          <Link className="nav-link" href="/catalog">Весь каталог</Link>
         </div>
-      </main>
-    </div>
+        <div className="grid">
+          {fresh.map((channel) => <ChannelCard key={channel.id} channel={channel} />)}
+        </div>
+        {fresh.length === 0 ? <p className="muted">Одобренных каналов пока нет.</p> : null}
+      </section>
+    </>
   );
 }

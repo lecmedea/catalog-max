@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Каталог каналов MAX
 
-## Getting Started
+Библиотека каналов мессенджера MAX. Витрина в духе TGStat: поиск, категории, карточки, статистика и отдельный каталог инструментов. Оформление — бумажный набросок: жёлтый лист, карандашная обводка и кнопки со смещённой тенью. Текст набран Source Sans 3, тем же семейством, что Source Sans Pro на huggingface.co.
 
-First, run the development server:
+Канал-источник: https://max.ru/channel_ii_katalog
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Страницы
+
+- `/` — поиск, категории, свежие карточки
+- `/catalog` и `/catalog/[slug]` — сетка, фильтры, карточка
+- `/platforms` — инструменты, только чтение для гостей и пользователей
+- `/login` и `/register` ведут на `/auth/login` и `/auth/register`
+- `/auth/reset-password`, `/auth/update-password`
+- `/dashboard`, `/dashboard/channels`, `/dashboard/favorites`, `/dashboard/profile`
+- `/admin` — модерация, пользователи, инструменты, категории
+
+## База
+
+Миграция `supabase/migrations/20261115094405_catalog_schema.sql`:
+
+- `profiles` создаётся триггером при регистрации. Роль всегда `user`, пока администратор не сменит её в базе.
+- `categories`, `channels`, `channel_stats`, `platforms`, `favorites`
+- код владения лежит в `channel_verifications` и не виден в публичной карточке
+- читать одобренный каталог может любой гость
+- править канал может его владелец, статус и метрики он сменить не может
+- `/platforms` и категории меняет только `role = admin`
+
+## Запуск
+
+Подробная инструкция для человека без навыков программирования открывается на самом сайте: `/instructions`.
+
+Коротко:
+
+1. Создайте проект Supabase.
+2. Скопируйте `.env.example` в `.env.local` и вставьте URL и publishable key.
+3. В SQL Editor выполните миграцию. Команда `supabase db push` нужна только тем, кто ставит программу Supabase CLI.
+4. В Auth → URL Configuration добавьте `http://localhost:3000/auth/callback` и `http://localhost:3000/auth/confirm`.
+5. Назначьте себя администратором:
+
+```sql
+update public.profiles set role = 'admin' where email = 'you@example.com';
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. `npm run dev`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Пароль — от 8 до 72 символов. В Supabase → Authentication → Providers → Email поставьте Minimum password length = 8, чтобы лимит совпал с формой. Никнейм уникален: латиница, цифры и `_`, 3–24 знака.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Первый администратор появляется только этим SQL. Форма регистрации роль не выдаёт.
 
-## Learn More
+Защита `/dashboard` и `/admin` живёт в `src/proxy.ts`. В Next.js 16 файл `middleware.ts` больше не вызывается: его переименовали в `proxy.ts`, а функцию — в `proxy`.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Встроенная почта Supabase отправляет примерно два письма в час. Для регистрации и сброса пароля на живом сайте подключите свой SMTP в Authentication → Emails. В Auth → URL Configuration добавьте также адрес сайта и путь `/auth/confirm`, если шаблон письма использует `token_hash`.
