@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { currentSession } from "@/lib/auth";
 import "./globals.css";
+import "../../public/catalog-table.css";
 
 const sourceSans = localFont({
   src: "./fonts/SourceSans3.ttf",
