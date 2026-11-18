@@ -5,7 +5,7 @@ import os,re,shutil,urllib.request,json,subprocess
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'pages-site'
+OUT=Path(os.environ.get('PAGES_OUTPUT_DIR',str(ROOT/'pages-site')))
 PREFIX='/catalog-max'
 ROUTES=['/','/catalog','/sale','/rating','/platforms','/instructions','/contacts','/auth/login','/auth/register','/auth/reset-password']
 
@@ -41,6 +41,7 @@ def main():
   source=ROOT/'src/app'/name
   if source.exists():shutil.copyfile(source,OUT/name)
  subprocess.run(['node',str(ROOT/'scripts/build-pages-chicks.cjs')],check=True)
+ subprocess.run(['python3',str(ROOT/'scripts/build-public-pages.py'),'--site-dir',str(OUT)],check=True)
  (OUT/'.nojekyll').write_text('')
  (OUT/'404.html').write_bytes((OUT/'index.html').read_bytes())
  print(json.dumps({'pages':len(ROUTES)+2,'files':len([p for p in OUT.rglob('*') if p.is_file()])}))

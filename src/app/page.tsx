@@ -1,46 +1,10 @@
 import Link from "next/link";
-import { ChannelCard } from "@/components/channel-card";
-import { SetupNote } from "@/components/setup-note";
-import { categoryCounts, freshChannels } from "@/lib/queries";
-import { supabaseEnv } from "@/lib/supabase/env";
+import data from "../../public/data/channels.json";
 
-export default async function HomePage() {
-  const configured = Boolean(supabaseEnv());
-  const [categories, fresh] = configured ? await Promise.all([categoryCounts(), freshChannels()]) : [[], []];
-  return (
-    <>
-      <section className="hero">
-        <div>
-          <p className="eyebrow">Catalog MAX</p>
-          <h1>Каталог каналов MAX</h1>
-          <p className="lede">Библиотека каналов мессенджера MAX. Владелец добавляет свой канал, администратор проверяет карточку, и после одобрения она появляется в каталоге: описание, категория, цена рекламы и число участников.</p>
-          <p>Гость ищет каналы, смотрит рейтинг и список инструментов. Рейтинг пока строится по числу участников. Позже чекер будет следить за притоком и поднимать каналы, которые растут быстрее остальных. Как подключить базу, написано в инструкциях.</p>
-          <form className="row" action="/catalog" method="get">
-            <label style={{ flex: 1 }}>Поиск по каталогу<input name="q" placeholder="Название или тема" /></label>
-            <button className="btn btn-primary" type="submit">Найти</button>
-          </form>
-        </div>
-        <aside className="panel">
-          <h2>Популярные категории</h2>
-          <div className="chips">
-            {categories.map((category) => (
-              <Link className="chip" key={category.id} href={`/catalog?category=${category.id}`}>{category.name} · {category.channel_count}</Link>
-            ))}
-          </div>
-          {categories.length === 0 ? <p className="muted">Категории появятся после подключения базы.</p> : null}
-        </aside>
-      </section>
-      {configured ? null : <SetupNote />}
-      <section>
-        <div className="row" style={{ justifyContent: "space-between" }}>
-          <h2>Свежие объявления</h2>
-          <Link className="nav-link" href="/catalog">Весь каталог</Link>
-        </div>
-        <div className="grid">
-          {fresh.map((channel) => <ChannelCard key={channel.id} channel={channel} />)}
-        </div>
-        {fresh.length === 0 ? <p className="muted">Одобренных каналов пока нет.</p> : null}
-      </section>
-    </>
-  );
+export default function HomePage() {
+  const described = data.channels.filter(channel => channel.description).length;
+  return <>
+    <section className="hero"><div><h1>Каталог каналов MAX</h1><p className="lede">{data.channels.length} каналов и ботов в одной таблице: ссылки, названия, описания и число участников.</p><form className="row" action="/catalog" method="get"><label style={{flex:1}}>Поиск по каталогу<input name="q" type="search" placeholder="Название, тема или ссылка" /></label><button className="btn btn-primary" type="submit">Найти</button></form></div><aside className="panel"><h2>Найдите свой канал</h2><p>Отбирайте по числу участников, наличию описания и аватарки. Сортируйте и сохраняйте свою выборку.</p><Link className="btn btn-primary" href="/catalog">Открыть таблицу</Link></aside></section>
+    <section className="panel"><h2>Каталог пополняется</h2><p>У {described} записей есть полученное описание. Если название или описание ещё недоступны, мы показываем это прямо в таблице.</p><p>Записи пока добавляет редакция. Вход для просмотра и поиска не нужен.</p><Link className="btn" href="/catalog?description=yes">Каналы с описанием</Link></section>
+  </>;
 }
